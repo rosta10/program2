@@ -1,0 +1,35 @@
+<html xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+
+<body>
+
+  <h2>
+    <th:block th:if="${car['new']}">Nové</th:block>
+    Auto
+  </h2>
+  <form th:object="${car}" class="form-horizontal" method="post">
+    <input type="hidden" name="id" th:value="*{id}" />
+    <div class="form-group has-feedback">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Majitel</label>
+        <div class="col-sm-10">
+          <span th:text="${owner?.firstName + ' ' + owner?.lastName}"></span>
+        </div>
+      </div>
+      <input
+        th:replace="~{fragments/inputField :: input ('Name', 'name', 'text')}" />
+      <input
+        th:replace="~{fragments/inputField :: input ('Yom', 'yom', 'date')}" />
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button
+          th:with="text=${car['new']} ? 'Add Pet' : 'Update Pet'"
+          class="btn btn-primary" type="submit" th:text="${text}">Pridej auto</button>
+      </div>
+    </div>
+  </form>
+
+</body>
+
+</html>

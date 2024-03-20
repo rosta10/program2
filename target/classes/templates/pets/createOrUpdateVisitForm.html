@@ -1,0 +1,60 @@
+<html xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+
+<body>
+
+  <h2>
+    <th:block th:if="${reservation['new']}">Nova </th:block>
+    Rezervace
+  </h2>
+
+  <b>Auto</b>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nazev</th>
+        <th>Rok vyroby</th>
+        <th>Cena</th>
+        <th>Majitel</th>
+      </tr>
+    </thead>
+    <tr>
+      <td th:text="${car.name}"></td>
+      <td
+        th:text="${#temporals.format(car.yom, 'yyyy-MM-dd')}"></td>
+      <td
+        th:text="${owner?.firstName + ' ' + owner?.lastName}"></td>
+    </tr>
+  </table>
+
+  <form th:object="${reservation}" class="form-horizontal" method="post">
+    <div class="form-group has-feedback">
+      <input
+        th:replace="~{fragments/inputField :: input ('Date', 'date', 'date')}"  />
+      <input
+        th:replace="~{fragments/inputField :: input ('Description', 'description', 'text')}" />
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <input type="hidden" name="carId" th:value="${car.id}" />
+        <button class="btn btn-primary" type="submit">Pridej rezervaci</button>
+      </div>
+    </div>
+  </form>
+
+  <br />
+  <b>Predchozi rezervace</b>
+  <table class="table table-striped">
+    <tr>
+      <th>Datum</th>
+      <th>Popis</th>
+    </tr>
+    <tr th:if="${!reservation['new']}" th:each="reservation : ${car.reservation}">
+      <td th:text="${#temporals.format(reservation.date, 'yyyy-MM-dd')}"></td>
+      <td th:text=" ${reservation.description}"></td>
+    </tr>
+  </table>
+
+</body>
+</html>
